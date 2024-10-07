@@ -8,17 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
-    @Environment(\.pageNumber) private var selectedTab
 
     var body: some View {
-        tab()
+        TabView()
             .safeAreaInset(edge: .bottom) {
                 TabBarView()
             }
     }
-    
-    @ViewBuilder
-    func tab() -> some View{
+}
+
+struct TabView: View {
+    @Environment(\.pageNumber) private var selectedTab
+
+    var body: some View {
         GeometryReader{ _ in
             switch selectedTab.pageNumber{
             case .home:
