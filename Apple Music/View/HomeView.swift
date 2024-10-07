@@ -19,8 +19,13 @@ struct HomeView: View {
                 .padding(.horizontal)
                 
                 ScrollView(.horizontal) {
-                    topPicks()
+                    HStack{
+                        ForEach(0..<5) { _ in
+                            topPicks()
+                        }
+                    }
                 }
+                .scrollIndicators(.hidden)
             }
             .navigationTitle("Home")
         }
@@ -47,10 +52,12 @@ struct HomeView: View {
                                 RoundedRectangle(cornerRadius: 10)
                             }
                         }
-                        .overlay{
+                        .overlay(alignment: .center){
                             Text("КИТЧ, Tell Me a Fairytale, Монеточка, Noize MC, MORGENSHTERN")
                                 .multilineTextAlignment(.center)
                                 .foregroundStyle(.white)
+                                .offset(y: 10)
+                                .padding()
                         }
                 }
                 HStack{
@@ -70,7 +77,7 @@ struct HomeView: View {
                 
             }
         }
-        .padding(.horizontal)
+        .padding(.leading)
     }
 }
 
