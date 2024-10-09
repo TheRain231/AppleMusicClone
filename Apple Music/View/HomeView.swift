@@ -1,5 +1,5 @@
 //
-//  HomeView.swift
+ //  HomeView.swift
 //  Apple Music
 //
 //  Created by Андрей Степанов on 07.10.2024.
@@ -11,21 +11,27 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             ScrollView() {
-                HStack{
-                    Text("Top picks for you")
-                        .font(.headline)
-                    Spacer()
-                }
-                .padding(.horizontal)
-                
-                ScrollView(.horizontal) {
+                VStack(spacing: 0){
                     HStack{
-                        ForEach(0..<5) { _ in
-                            topPicks()
-                        }
+                        Text("Top picks for you")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                        Spacer()
                     }
+                    .padding(.horizontal)
+                    
+                    ScrollView(.horizontal) {
+                        HStack{
+                            ForEach(0..<5) { _ in
+                                topPicks()
+                            }
+                        }
+                        .scrollTargetLayout()
+                    }
+                    .safeAreaPadding(.horizontal)
+                    .scrollTargetBehavior(.viewAligned)
+                    .scrollIndicators(.hidden)
                 }
-                .scrollIndicators(.hidden)
             }
             .navigationTitle("Home")
         }
@@ -77,7 +83,7 @@ struct HomeView: View {
                 
             }
         }
-        .padding(.leading)
+        .padding(.trailing, 5)
     }
 }
 
