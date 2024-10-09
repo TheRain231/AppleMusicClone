@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    @State private var scrollPos: CGFloat = 0
     var body: some View {
         NavigationStack {
             ScrollView() {
@@ -33,7 +34,35 @@ struct HomeView: View {
                     .scrollIndicators(.hidden)
                 }
             }
+            .onScrollGeometryChange(for: CGFloat.self) {
+                $0.contentOffset.y + $0.contentInsets.top
+            } action: { _, newValue in
+                withAnimation(.easeInOut(duration: 0.1)) {
+                    scrollPos = newValue
+                }
+                print(scrollPos)
+            }
             .navigationTitle("Home")
+        }
+        .overlay {
+            GeometryReader{ _ in
+                HStack{
+                    Spacer()
+                    
+                    Button{
+                        
+                    } label: {
+                        Image(systemName: "person.circle.fill")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 30, height: 30)
+                            .opacity(scrollPos == -2.842170943040401e-14 ? 1 : 0)
+                    }
+                }
+                .foregroundStyle(.primary)
+                .padding(.vertical, 40)
+                .padding(.horizontal, 15)
+            }
         }
     }
     
