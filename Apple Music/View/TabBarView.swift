@@ -63,7 +63,7 @@ struct TabBarView: View {
             }
             .foregroundStyle(selectedTab.pageNumber == tab.tab ? .red : .primary)
             .padding(5)
-            .padding(.horizontal, 16)
+            .padding(.horizontal, 15)
         }
         .buttonStyle(.plain)
     }
