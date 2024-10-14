@@ -10,7 +10,6 @@ import SwiftUI
 struct HomeView: View {
     @State private var scrollPos: CGFloat = 0
     @State private var isScrolling: Bool = false
-    private var matched = Namespace().wrappedValue
     
     var body: some View {
         ScrollView() {

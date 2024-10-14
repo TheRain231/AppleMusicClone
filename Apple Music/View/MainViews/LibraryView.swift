@@ -29,27 +29,29 @@ struct LibraryView: View {
                 }
                 .navigationDestination(for: Album.self) {
                     AlbumView(album: $0)
+                        .navigationBarBackButtonHidden(true)
+                        .ignoresSafeArea()
                 }
                 .safeAreaInset(edge: .top) {
                     CustomHeader.header("Library")
                 }
                 .scrollTargetLayout()
             }
-
-        }
-        .scrollTargetBehavior(customScrollTarget())
-        .onScrollGeometryChange(for: CGFloat.self) {
-            $0.contentOffset.y + $0.contentInsets.top
-        } action: { _, newValue in
-            withAnimation(.easeInOut(duration: 0.1)) {
-                scrollPos = newValue
+            .scrollTargetBehavior(customScrollTarget())
+            .onScrollGeometryChange(for: CGFloat.self) {
+                $0.contentOffset.y + $0.contentInsets.top
+            } action: { _, newValue in
+                withAnimation(.easeInOut(duration: 0.1)) {
+                    scrollPos = newValue
+                }
+            }
+            .overlay {
+                ZStack{
+                    CustomHeader.overlay("Library", scrollPos, editButton: true)
+                }
             }
         }
-        .overlay {
-            ZStack{
-                CustomHeader.overlay("Library", scrollPos, editButton: true)
-            }
-        }
+        
     }
 }
 
