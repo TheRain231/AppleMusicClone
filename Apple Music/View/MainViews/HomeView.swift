@@ -24,7 +24,7 @@ struct HomeView: View {
             
             .scrollTargetBehavior(.viewAligned)
             .safeAreaInset(edge: .top) {
-                CustomHeader.header() 
+                CustomHeader.header("Home")
             }
             .scrollTargetLayout()
         }
@@ -37,7 +37,7 @@ struct HomeView: View {
             }
         }
         .overlay {
-            CustomHeader.overlay(scrollPos)
+            CustomHeader.overlay("Home", scrollPos)
         }
     }
     
