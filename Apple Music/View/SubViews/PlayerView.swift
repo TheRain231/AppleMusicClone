@@ -99,16 +99,16 @@ extension PlayerView {
         }
         .frame(
             maxWidth: .infinity,
-            maxHeight: 65
+            maxHeight: 60
         )
         .background{
             Rectangle()
                 .fill(Color(UIColor.systemBackground))
                 .clipShape(.rect(cornerRadius: 15))
                 .matchedGeometryEffect(id: TransitionID.background, in: namespace)
-                .ignoresSafeArea(edges: .bottom)
+                
         }
-        
+        .shadow(radius: 20)
         .padding(10)
         .offset(y: -80)
     }

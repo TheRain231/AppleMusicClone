@@ -120,12 +120,12 @@ struct customScrollTarget: ScrollTargetBehavior {
     func updateTarget(_ target: inout ScrollTarget, context: TargetContext) {
         let endPoint = target.rect.minY
         
-        if endPoint < 40 {
-            if endPoint < 20{
+        if endPoint < 70 {
+            if endPoint < 40{
                 target.rect.origin = .zero
             }
             else {
-                target.rect.origin = .init(x: 0, y: 40)
+                target.rect.origin = .init(x: 0, y: 60)
             }
         }
     }

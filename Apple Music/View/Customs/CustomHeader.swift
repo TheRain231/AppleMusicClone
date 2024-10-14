@@ -12,7 +12,7 @@ struct CustomHeader {
         VStack{
             Rectangle()
                 .foregroundStyle(.clear)
-                .frame(height: 10)
+                .frame(height: 15)
             HStack{
                 Text(text)
                     .font(.largeTitle)
@@ -44,7 +44,7 @@ struct CustomHeader {
                 ZStack{
                     Rectangle()
                         .fill(.ultraThickMaterial)
-                        .fill(Color(uiColor: UIColor.systemBackground).opacity(scrollPos > 40 ? 0 : 1))
+                        .fill(Color(uiColor: UIColor.systemBackground).opacity(scrollPos > 60 ? 0 : 1))
                         .animation(.easeInOut, value: scrollPos > 40)
                         .ignoresSafeArea(edges: .top)
                         .frame(height: 25)
@@ -53,7 +53,7 @@ struct CustomHeader {
                     Text(text)
                         .fontWeight(.semibold)
                         .offset(y: -5)
-                        .opacity(scrollPos >= 30 ? 1 : 0)
+                        .opacity(scrollPos >= 50 ? 1 : 0)
                     
                     
                 }
