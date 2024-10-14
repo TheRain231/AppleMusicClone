@@ -16,6 +16,7 @@ struct PlayerView: View {
         case play
         case forward
         case artist
+        case background
     }
     
     @Namespace
@@ -31,15 +32,6 @@ struct PlayerView: View {
             VStack{
                 content
             }
-                .frame(
-                    maxWidth: .infinity,
-                    maxHeight: isExpanded ? .infinity : 65
-                )
-                .background{
-                    Rectangle()
-                        .foregroundStyle(.thinMaterial)
-                        .ignoresSafeArea(edges: .bottom)
-                }
                 .animation(.spring, value: isExpanded)
                 .onTapGesture {
                     isExpanded.toggle()
@@ -68,15 +60,16 @@ extension PlayerView {
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .matchedGeometryEffect(id: TransitionID.cover, in: namespace)
                 .transition(.slide)
-                .padding(.leading)
+                .padding(.leading, 10)
                 .padding(.vertical, 10)
             VStack{
                 Text(song)
+                    .lineLimit(1)
+                    .offset(y:4)
                     .matchedGeometryEffect(id: TransitionID.title, in: namespace)
                 Color.clear.frame(width: 0, height: 0)
                     .matchedGeometryEffect(id: TransitionID.artist, in: namespace)
             }
-            
 
             
             Spacer()
@@ -88,6 +81,7 @@ extension PlayerView {
                     
                 } label: {
                     Image(systemName: "play.fill")
+                        .font(.title2)
                 }
                 .matchedGeometryEffect(id: TransitionID.play, in: namespace)
 
@@ -95,6 +89,7 @@ extension PlayerView {
                     
                 } label: {
                     Image(systemName: "forward.fill")
+                        .font(.title2)
                 }
                 .matchedGeometryEffect(id: TransitionID.forward, in: namespace)
 
@@ -102,6 +97,20 @@ extension PlayerView {
             }
             .foregroundStyle(.primary)
         }
+        .frame(
+            maxWidth: .infinity,
+            maxHeight: 65
+        )
+        .background{
+            Rectangle()
+                .fill(Color(UIColor.systemBackground))
+                .clipShape(.rect(cornerRadius: 15))
+                .matchedGeometryEffect(id: TransitionID.background, in: namespace)
+                .ignoresSafeArea(edges: .bottom)
+        }
+        
+        .padding(10)
+        .offset(y: -80)
     }
     
     var big: some View{
@@ -143,13 +152,25 @@ extension PlayerView {
                     Image(systemName: "forward.fill")
                 }
                 .matchedGeometryEffect(id: TransitionID.forward, in: namespace)
-
             }
             .foregroundStyle(.primary)
             .font(.largeTitle)
             .padding(20)
         }
+        .frame(
+            maxWidth: .infinity,
+            maxHeight: .infinity
+        )
+        
+        .background{
+            Rectangle()
+                .fill(.thinMaterial)
+                .matchedGeometryEffect(id: TransitionID.background, in: namespace)
+                .ignoresSafeArea()
+                
+        }
     }
+    
 }
 
 struct MyButtonStyle: ButtonStyle {
@@ -164,6 +185,7 @@ struct MyButtonStyle: ButtonStyle {
         LinearGradient(colors: [.white, .blue, .red], startPoint: .topLeading, endPoint: .bottomTrailing)
             .ignoresSafeArea()
         
-        PlayerView(album: albums.first!, song: albums.first!.songs[6])
+        PlayerView(album: albums.first!, song: albums.first!.songs[2])
+            .ignoresSafeArea()
     }
 }

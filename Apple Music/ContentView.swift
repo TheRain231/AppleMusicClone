@@ -13,6 +13,11 @@ struct ContentView: View {
         TabView()
             .safeAreaInset(edge: .bottom) {
                 TabBarView()
+                   
+            }
+            .overlay {
+                PlayerView(album: albums.first!, song: albums.first!.songs.first!)
+                    .ignoresSafeArea()
             }
     }
 }
