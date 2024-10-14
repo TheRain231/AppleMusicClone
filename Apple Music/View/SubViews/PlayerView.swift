@@ -32,7 +32,7 @@ struct PlayerView: View {
             VStack{
                 content
             }
-                .animation(.spring, value: isExpanded)
+            .animation(.snappy(duration: 0.45), value: isExpanded)
                 .onTapGesture {
                     isExpanded.toggle()
                 }
