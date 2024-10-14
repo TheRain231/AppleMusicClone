@@ -38,14 +38,16 @@ struct TabBarView: View {
                 }
                 .frame(height: 50)
                 .offset(y: 8)
-            HStack() {
+                .ignoresSafeArea()
+            HStack{
                 ForEach(tabs, id: \.self){ tab in
                     tabItemView(tab)
+                        .frame(maxWidth: .infinity)
                 }
+                .frame(maxWidth: .infinity)
             }
             .background(.thickMaterial)
         }
-        .frame(maxWidth: .infinity)
     }
     
     func tabItemView(_ tab: Tab) -> some View {
@@ -63,7 +65,7 @@ struct TabBarView: View {
             }
             .foregroundStyle(selectedTab.pageNumber == tab.tab ? .red : .primary)
             .padding(5)
-            .padding(.horizontal, 15)
+            //.padding(.horizontal, 15)
         }
         .buttonStyle(.plain)
     }

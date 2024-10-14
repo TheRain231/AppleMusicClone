@@ -60,12 +60,6 @@ struct HomeView: View {
         }
     }
     
-    private nonisolated
-    func offsetY(_ proxy: GeometryProxy) -> CGFloat{
-        let minY = proxy.frame(in: .scrollView(axis: .vertical)).minY
-        return minY > 10 ? 0 : -10
-    }
-    
     @ViewBuilder
     func header() -> some View {
         HStack{
