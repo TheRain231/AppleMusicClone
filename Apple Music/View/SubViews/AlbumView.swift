@@ -10,20 +10,24 @@ import SwiftUI
 struct AlbumView: View {
     let album: Album
     @Binding var path: [Album]
-
+    
     var body: some View {
         ScrollView{
             VStack{
-                Spacer(minLength: 70)
+                Spacer(minLength: 90)
+                
+                
                 Image(album.imageName)
                     .resizable()
                     .scaledToFit()
-                    .clipShape(RoundedRectangle(cornerRadius: /*@START_MENU_TOKEN@*/25.0/*@END_MENU_TOKEN@*/))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
                     .padding(.horizontal)
+                    .frame(width: UIScreen.main.bounds.size.width * 2 / 3, height: UIScreen.main.bounds.size.width * 2 / 3)
+                    .shadow(color: .black.opacity(0.4), radius: 20)
                 Text(album.text)
-                    .font(.largeTitle)
-                    .fontWeight(.heavy)
-                    .fontWidth(.expanded)
+                    .font(.title)
+                    .fontWeight(.semibold)
+                
                 Text(album.artist)
                     .fontWeight(.medium)
                 
@@ -31,16 +35,22 @@ struct AlbumView: View {
                     Button {
                         
                     } label: {
-                        Image(systemName: "play.fill")
-                            .frame(width: 50)
+                        HStack{
+                            Image(systemName: "play.fill")
+                                .frame(height: 20)
+                            Text("Play")
+                        }
                     }
                     .buttonStyle(NeumorphicButtonStyle(bgColor: .secondary.opacity(0.3)))
                     
                     Button {
                         
                     } label: {
-                        Image(systemName: "shuffle")
-                            .frame(width: 50)
+                        HStack{
+                            Image(systemName: "shuffle")
+                                .frame(height: 20)
+                            Text("Shuffle")
+                        }
                     }
                     .buttonStyle(NeumorphicButtonStyle(bgColor: .secondary.opacity(0.3)))
                 }
@@ -69,11 +79,11 @@ struct AlbumView: View {
                         Divider()
                             .padding(.horizontal, 20)
                             .padding(.leading, 20)
+                        
                     }
                 }
-                .listStyle(.plain)
+                Spacer(minLength: 150)
             }
-            Spacer(minLength: 150)
         }
         .padding()
     }
@@ -84,19 +94,17 @@ struct NeumorphicButtonStyle: ButtonStyle {
     
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
-            .padding(20)
-            .background(
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .shadow(color: .white, radius: configuration.isPressed ? 7: 10, x: configuration.isPressed ? -5: -15, y: configuration.isPressed ? -5: -15)
-                        .shadow(color: .black, radius: configuration.isPressed ? 7: 10, x: configuration.isPressed ? 5: 15, y: configuration.isPressed ? 5: 15)
-                        .blendMode(.overlay)
-                    RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .fill(bgColor)
-                }
-            )
-            .scaleEffect(configuration.isPressed ? 0.95: 1)
+        
+            .padding(.horizontal, 20)
+            .padding(.vertical, 15)
+            .frame(maxWidth: .infinity)
+            .background{
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundStyle(.placeholder)
+            }
             .foregroundColor(.primary)
+            .opacity(configuration.isPressed ? 0.7 : 1)
+            .padding(.horizontal, 10)
     }
 }
 

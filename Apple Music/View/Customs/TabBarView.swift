@@ -20,33 +20,49 @@ struct TabBarView: View {
     
     
     var body: some View {
-        VStack{
+        ZStack{
             Rectangle()
-                .fill(.thickMaterial)
+                .fill(.ultraThinMaterial)
                 .mask {
                     VStack(spacing: 0) {
                         LinearGradient(
                             colors: [
                                 Color.black.opacity(1),
-                                Color.black.opacity(0),
+                                Color.black.opacity(0)
                             ],
                             startPoint: .bottom,
-                            endPoint: .top
+                            endPoint: .center
                         )
                         Rectangle()
                     }
                 }
-                .frame(height: 50)
-                .offset(y: 8)
                 .ignoresSafeArea()
+                .frame(height: 150)
+            Color(UIColor.systemBackground)
+                .opacity(0.8)
+                .mask {
+                    VStack(spacing: 0) {
+                        LinearGradient(
+                            colors: [
+                                Color.black.opacity(1),
+                                Color.black.opacity(0)
+                            ],
+                            startPoint: .bottom,
+                            endPoint: .center
+                        )
+                        Rectangle()
+                    }
+                }
+                .ignoresSafeArea()
+                .frame(height: 150)
             HStack{
                 ForEach(tabs, id: \.self){ tab in
                     tabItemView(tab)
                         .frame(maxWidth: .infinity)
                 }
                 .frame(maxWidth: .infinity)
+                .offset(y: 50)
             }
-            .background(.thickMaterial)
         }
     }
     
@@ -73,5 +89,9 @@ struct TabBarView: View {
 
 
 #Preview {
-    TabBarView()
+    ZStack{
+        Color.black.ignoresSafeArea()
+        
+        TabBarView()
+    }
 }

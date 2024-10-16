@@ -103,7 +103,7 @@ extension PlayerView {
         )
         .background{
             Rectangle()
-                .fill(Color(UIColor.systemBackground))
+                .fill(.ultraThickMaterial)
                 .clipShape(.rect(cornerRadius: 15))
                 .matchedGeometryEffect(id: TransitionID.background, in: namespace)
                 
