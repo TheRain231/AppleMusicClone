@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LibraryView: View {
-    @State var path = [Album]()
+    @State private var path: [Album] = []
     @State private var scrollPos: CGFloat = 0
     
     var body: some View {
@@ -28,8 +28,7 @@ struct LibraryView: View {
                     .padding(10)
                 }
                 .navigationDestination(for: Album.self) {
-                    AlbumView(album: $0)
-                        .navigationBarBackButtonHidden(true)
+                    AlbumView(album: $0, path: $path)
                         .ignoresSafeArea()
                 }
                 .safeAreaInset(edge: .top) {
