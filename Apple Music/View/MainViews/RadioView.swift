@@ -9,7 +9,9 @@ import SwiftUI
 
 struct RadioView: View {
     var body: some View {
-        Text("Radio")
+        CustomScrollView(title: "Radio") {
+            
+        }
     }
 }
 

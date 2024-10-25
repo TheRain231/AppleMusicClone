@@ -11,28 +11,9 @@ struct NewView: View {
     @State private var scrollPos: CGFloat = 0
     
     var body: some View {
-        ScrollView() {
-            VStack(){
-                kitches()
-                lastestSongs()
-                Spacer(minLength: 150)
-            }
-            .scrollTargetBehavior(.viewAligned)
-            .safeAreaInset(edge: .top) {
-                CustomHeader.header("New")
-            }
-            .scrollTargetLayout()
-        }
-        .scrollTargetBehavior(customScrollTarget())
-        .onScrollGeometryChange(for: CGFloat.self) {
-            $0.contentOffset.y + $0.contentInsets.top
-        } action: { _, newValue in
-            withAnimation(.easeInOut(duration: 0.1)) {
-                scrollPos = newValue
-            }
-        }
-        .overlay {
-            CustomHeader.overlay("New", scrollPos)
+        CustomScrollView(title: "New") {
+            kitches()
+            lastestSongs()
         }
     }
     

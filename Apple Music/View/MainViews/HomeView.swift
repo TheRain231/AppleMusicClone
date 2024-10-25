@@ -11,31 +11,10 @@ struct HomeView: View {
     @State private var scrollPos: CGFloat = 0
     
     var body: some View {
-        ScrollView() {
-            VStack(){
-                topPicks()
-                    
-                topPicks()
-
-                topPicks()
-            }
-            
-            .scrollTargetBehavior(.viewAligned)
-            .safeAreaInset(edge: .top) {
-                CustomHeader.header("Home")
-            }
-            .scrollTargetLayout()
-        }
-        .scrollTargetBehavior(customScrollTarget())
-        .onScrollGeometryChange(for: CGFloat.self) {
-            $0.contentOffset.y + $0.contentInsets.top
-        } action: { _, newValue in
-            withAnimation(.easeInOut(duration: 0.1)) {
-                scrollPos = newValue
-            }
-        }
-        .overlay {
-            CustomHeader.overlay("Home", scrollPos)
+        CustomScrollView(title: "Home") {
+            topPicks()
+            topPicks()
+            topPicks()
         }
     }
     
