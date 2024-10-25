@@ -30,7 +30,7 @@ struct CustomScrollView<Content: View>: View {
             VStack {
                 content
                 
-                Spacer(minLength: 150)
+                Spacer(minLength: editButton ? 150 : 0)
             }
             .scrollTargetBehavior(.viewAligned)
             .safeAreaInset(edge: .top) {
