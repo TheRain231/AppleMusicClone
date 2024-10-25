@@ -35,6 +35,8 @@ struct LibraryView: View {
                     CustomHeader.header("Library")
                 }
                 .scrollTargetLayout()
+                
+                Spacer(minLength: 150)
             }
             .scrollTargetBehavior(customScrollTarget())
             .onScrollGeometryChange(for: CGFloat.self) {

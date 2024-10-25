@@ -16,7 +16,7 @@ struct Album: Hashable{
 
 let albums: [Album] = [
     Album(imageName: "kiss", text: "Never love you", artist: "K1SS", songs: [
-        "kys",
+        "i'm kissman",
         "pink guy",
         "red fella",
         "goodbye louvre",
@@ -43,14 +43,66 @@ let albums: [Album] = [
         "скуф"
     ]),
     Album(imageName: "pornofilms", text: "Свободные", artist: "LOVEMOVIES", songs: [
-        "За Путина!",
         "Еще разок",
-        "Торчу",
+        "Шаман",
         "Не смог",
         "Бросить",
         "Торфяной оазис",
         "Дряной мотель",
         "Что-то не так",
         "Не вписался"
+    ]),
+    Album(imageName: "kitch", text: "Ловец Снов", artist: "КИТЧ", songs: [
+        "Вселенная",
+        "Расскажи мне сказку",
+        "Еще",
+        "Следующая",
+        "Песня"
     ])
+]
+
+struct Song: Hashable{
+    let album: Album
+    let number: Int
+}
+
+let songs: [Song] = [
+    Song(album: albums[0], number: 0),
+    Song(album: albums[0], number: 1),
+    Song(album: albums[0], number: 2),
+    Song(album: albums[0], number: 3),
+    Song(album: albums[0], number: 4),
+    Song(album: albums[0], number: 5),
+    Song(album: albums[0], number: 6),
+    Song(album: albums[0], number: 7),
+    
+    Song(album: albums[1], number: 0),
+    Song(album: albums[1], number: 1),
+    Song(album: albums[1], number: 2),
+    Song(album: albums[1], number: 3),
+    Song(album: albums[1], number: 4),
+    Song(album: albums[1], number: 5),
+    Song(album: albums[1], number: 6),
+    
+    Song(album: albums[2], number: 0),
+    Song(album: albums[2], number: 1),
+    Song(album: albums[2], number: 2),
+    Song(album: albums[2], number: 3),
+    Song(album: albums[2], number: 4),
+    Song(album: albums[2], number: 5),
+    
+    Song(album: albums[3], number: 0),
+    Song(album: albums[3], number: 1),
+    Song(album: albums[3], number: 2),
+    Song(album: albums[3], number: 3),
+    Song(album: albums[3], number: 4),
+    Song(album: albums[3], number: 5),
+    Song(album: albums[3], number: 6),
+    Song(album: albums[3], number: 7),
+    
+    Song(album: albums[4], number: 0),
+    Song(album: albums[4], number: 1),
+    Song(album: albums[4], number: 2),
+    Song(album: albums[4], number: 3),
+    Song(album: albums[4], number: 4)
 ]

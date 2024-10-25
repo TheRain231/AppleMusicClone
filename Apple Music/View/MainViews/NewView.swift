@@ -13,7 +13,9 @@ struct NewView: View {
     var body: some View {
         ScrollView() {
             VStack(){
-                topPicks()
+                kitches()
+                lastestSongs()
+                Spacer(minLength: 150)
             }
             .scrollTargetBehavior(.viewAligned)
             .safeAreaInset(edge: .top) {
@@ -34,7 +36,35 @@ struct NewView: View {
         }
     }
     
-    func topPicks() -> some View {
+    func lastestSongs() -> some View {
+        VStack(alignment: .leading){
+            Text("Latest songs")
+                .font(.title)
+                .bold()
+            
+            ScrollView(.horizontal) {
+                HStack(spacing: 20){
+                    ForEach(0..<songs.count / 4, id: \.self) { index in
+                        VStack{
+                            ForEach(0..<4, id: \.self) { songIndex in
+                                let song = songs[index * 4 + songIndex]
+                                SongCell(song: song)
+                                    .frame(width: 335)
+                            }
+                        }
+                    }
+                    Spacer()
+                }
+                .scrollTargetLayout()
+            }
+            .scrollTargetBehavior(.viewAligned)
+            .scrollIndicators(.hidden)
+        }
+        .safeAreaPadding(.horizontal)
+        
+    }
+    
+    func kitches() -> some View {
         VStack(alignment: .leading, spacing: 0){
             ScrollView(.horizontal) {
                 HStack(spacing: 0){
