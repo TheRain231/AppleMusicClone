@@ -164,7 +164,7 @@ extension PlayerView {
         
         .background{
             Rectangle()
-                .fill(.thinMaterial)
+                .fill(.thickMaterial)
                 .matchedGeometryEffect(id: TransitionID.background, in: namespace)
                 .ignoresSafeArea()
                 

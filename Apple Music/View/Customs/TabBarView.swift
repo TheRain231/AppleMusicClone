@@ -39,7 +39,7 @@ struct TabBarView: View {
                 .ignoresSafeArea()
                 .frame(height: 150)
             Color(UIColor.systemBackground)
-                .opacity(0.8)
+                .opacity(0.7)
                 .mask {
                     VStack(spacing: 0) {
                         LinearGradient(
