@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AlbumView: View {
     let album: Album
-    @Binding var path: [Album]
+    
     
     var body: some View {
         ScrollView{

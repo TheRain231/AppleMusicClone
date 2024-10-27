@@ -54,10 +54,11 @@ let albums: [Album] = [
     ]),
     Album(imageName: "kitch", text: "Ловец Снов", artist: "КИТЧ", songs: [
         "Вселенная",
+        "Кости",
+        "Я тебя знаю",
         "Расскажи мне сказку",
-        "Еще",
-        "Следующая",
-        "Песня"
+        "Обещай мне сниться",
+        "Колыбельная"
     ])
 ]
 
@@ -104,5 +105,6 @@ let songs: [Song] = [
     Song(album: albums[4], number: 1),
     Song(album: albums[4], number: 2),
     Song(album: albums[4], number: 3),
-    Song(album: albums[4], number: 4)
+    Song(album: albums[4], number: 4),
+    Song(album: albums[4], number: 5)
 ]

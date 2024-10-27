@@ -17,15 +17,15 @@ struct LibraryView: View {
                 LazyVGrid(columns: [columnSize]){
                     ForEach(albums, id: \.self) { album in
                         NavigationLink(value: album) {
-                            Button {
-                                path.append(album)
-                            } label: {
-                                CellView(album: album)
-                            }
+                            CellView(album: album)
                         }
                         .foregroundStyle(.primary)
                     }
                     .padding(10)
+                }
+                .navigationDestination(for: Album.self) { album in
+                    AlbumView(album: album)
+                        .ignoresSafeArea()
                 }
             }
         }
