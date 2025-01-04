@@ -34,7 +34,7 @@ struct CustomScrollView<Content: View>: View {
             }
             .scrollTargetBehavior(.viewAligned)
             .safeAreaInset(edge: .top) {
-                CustomHeader.header(title)
+                CustomHeader.header(title, editButton: editButton)
             }
             .scrollTargetLayout()
         }
@@ -47,7 +47,7 @@ struct CustomScrollView<Content: View>: View {
             }
         }
         .overlay {
-            CustomHeader.overlay(title, scrollPos, editButton: editButton)
+            CustomHeader.overlay(title, scrollPos)
         }
     }
 }

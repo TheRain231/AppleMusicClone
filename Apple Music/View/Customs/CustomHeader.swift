@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CustomHeader {
-    static func header(_ text: String) -> some View {
+    static func header(_ text: String, editButton: Bool = false) -> some View {
         VStack{
             Rectangle()
                 .foregroundStyle(.clear)
@@ -19,6 +19,18 @@ struct CustomHeader {
                     .fontWeight(.heavy)
                 
                 Spacer()
+                
+                if editButton{
+                    Button{
+                        
+                    } label: {
+                        Image(systemName: "ellipsis.circle.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 25, height: 25)
+                            .clipShape(.circle)
+                    }
+                }
                 
                 Button {
                     
@@ -34,52 +46,37 @@ struct CustomHeader {
             .padding(15)
             //здеась еще visualEffect на увелечение
         }
-        
     }
     
-    static func overlay(_ text: String, _ scrollPos: CGFloat, editButton: Bool = false) -> some View {
-        ZStack {
-            
-            VStack{
-                ZStack{
-                    Rectangle()
-                        .fill(.ultraThickMaterial)
-                        .fill(Color(uiColor: UIColor.systemBackground).opacity(scrollPos > 60 ? 0 : 1))
-                        .animation(.easeInOut, value: scrollPos > 40)
-                        .ignoresSafeArea(edges: .top)
-                        .frame(height: 25)
-                    
-                    
+    static func overlay(_ text: String, _ scrollPos: CGFloat, hasSearch: Bool = false) -> some View {
+        VStack{
+            ZStack{
+                Rectangle()
+                    .fill(.ultraThickMaterial)
+                    .fill(Color(uiColor: UIColor.systemBackground).opacity(scrollPos > 60 ? 0 : 1))
+                    .animation(.easeInOut, value: scrollPos > 40)
+                    .ignoresSafeArea(edges: .top)
+                    .frame(height: hasSearch ? 50 : 25)
+                
+                VStack{
                     Text(text)
                         .fontWeight(.semibold)
                         .offset(y: -5)
                         .opacity(scrollPos >= 50 ? 1 : 0)
-                    
-                    
-                }
-                .offset(y: scrollPos > 1 ? min(-10 + scrollPos / 3, 0) : -10)
-                Spacer()
-            }
-            if editButton{
-                VStack{
-                    HStack{
-                        Spacer()
-                        Button{
-                            
-                        } label: {
-                            Text("Edit")
-                                .offset(x: -15, y: -5)
-                        }
+                    if (hasSearch){
+                        Text("Search")
+                            .opacity(scrollPos >= 50 ? 1 : 0)
                     }
-                    Spacer()
                 }
             }
+            .offset(y: scrollPos > 1 ? min(-10 + scrollPos / 3, 0) : -10)
+            Spacer()
         }
         
     }
 }
 
-private struct headerPrewiew: View {
+fileprivate struct headerPrewiew: View {
     @State private var scrollPos: CGFloat = 0
     @State private var isScrolling: Bool = false
     private var matched = Namespace().wrappedValue
@@ -90,12 +87,11 @@ private struct headerPrewiew: View {
                 ForEach(0..<100) { _ in
                     Rectangle()
                         .frame(width: 40, height: 20)
-                    }
+                }
             }
-            
             .scrollTargetBehavior(.viewAligned)
             .safeAreaInset(edge: .top) {
-                CustomHeader.header("Home")
+                CustomHeader.header("Home", editButton: true)
             }
             .scrollTargetLayout()
         }
@@ -108,7 +104,7 @@ private struct headerPrewiew: View {
             }
         }
         .overlay {
-            CustomHeader.overlay("Home", scrollPos, editButton: false)
+            CustomHeader.overlay("Home", scrollPos, hasSearch: true)
         }
     }
 }
