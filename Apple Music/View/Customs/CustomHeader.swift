@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct CustomHeader {
-    static func header(_ text: String, editButton: Bool = false) -> some View {
+    private static let opacityOffset = 40.0
+    
+    static func header(_ text: String, _ scrollPos: CGFloat, editButton: Bool = false) -> some View {
         VStack{
             Rectangle()
                 .foregroundStyle(.clear)
@@ -44,31 +46,26 @@ struct CustomHeader {
             }
             .foregroundStyle(.primary)
             .padding(15)
-            //здеась еще visualEffect на увелечение
+            //здесь еще visualEffect на увелечение
         }
+        .opacity(scrollPos >= opacityOffset ? 0 : 1)
     }
     
     static func overlay(_ text: String, _ scrollPos: CGFloat, hasSearch: Bool = false) -> some View {
         VStack{
             ZStack{
                 Rectangle()
-                    .fill(.ultraThickMaterial)
-                    .fill(Color(uiColor: UIColor.systemBackground).opacity(scrollPos > 60 ? 0 : 1))
-                    .animation(.easeInOut, value: scrollPos > 40)
+                    .fill(.regularMaterial)
                     .ignoresSafeArea(edges: .top)
-                    .frame(height: hasSearch ? 50 : 25)
-                
                 VStack{
                     Text(text)
                         .fontWeight(.semibold)
                         .offset(y: -5)
-                        .opacity(scrollPos >= 50 ? 1 : 0)
-                    if (hasSearch){
-                        Text("Search")
-                            .opacity(scrollPos >= 50 ? 1 : 0)
-                    }
+                        .frame(maxHeight: .infinity, alignment: .top)
                 }
             }
+            .frame(height: hasSearch ? 75 : 25)
+            .opacity(scrollPos >= opacityOffset ? 1 : 0)
             .offset(y: scrollPos > 1 ? min(-10 + scrollPos / 3, 0) : -10)
             Spacer()
         }
@@ -86,12 +83,13 @@ fileprivate struct headerPrewiew: View {
             VStack(){
                 ForEach(0..<100) { _ in
                     Rectangle()
-                        .frame(width: 40, height: 20)
+                        .fill(Color(red: CGFloat.random(in: 0..<1), green: CGFloat.random(in: 0..<1), blue: CGFloat.random(in: 0..<1)))
+                        .frame(width: 200, height: 60)
                 }
             }
             .scrollTargetBehavior(.viewAligned)
             .safeAreaInset(edge: .top) {
-                CustomHeader.header("Home", editButton: true)
+                CustomHeader.header("Home", scrollPos, editButton: true)
             }
             .scrollTargetLayout()
         }

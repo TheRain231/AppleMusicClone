@@ -63,6 +63,17 @@ let albums: [Album] = [
         "Сердце",
         "Я тебя знаю",
         "Колыбельная"
+    ]),
+    Album(imageName: "bbno$", text: "ешь свои овощи", artist: "ббнет₽", songs: [
+        "резюме",
+        "йога",
+        "едамаме",
+        "черно-глазые пимидоры",
+        "безмозглый",
+        "ты злой!",
+        "2 временные зоны",
+        "проверься",
+        "большой босс молокосос"
     ])
 ]
 
@@ -114,5 +125,15 @@ let songs: [Song] = [
     Song(album: albums[4], number: 6),
     Song(album: albums[4], number: 7),
     Song(album: albums[4], number: 8),
-    Song(album: albums[4], number: 9)
+    Song(album: albums[4], number: 9),
+    
+    Song(album: albums[5], number: 0),
+    Song(album: albums[5], number: 1),
+    Song(album: albums[5], number: 2),
+    Song(album: albums[5], number: 3),
+    Song(album: albums[5], number: 4),
+    Song(album: albums[5], number: 5),
+    Song(album: albums[5], number: 6),
+    Song(album: albums[5], number: 7),
+    Song(album: albums[5], number: 8)
 ]

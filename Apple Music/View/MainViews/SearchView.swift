@@ -8,37 +8,20 @@
 import SwiftUI
 
 struct SearchView: View {
-    @State private var scrollPos: CGFloat = 0
-    @State private var isScrolling: Bool = false
     @State private var searchText: String = ""
     @State private var showCancelButton: Bool = false
     
     var body: some View {
-        
-        ScrollView() {
+        CustomScrollView(title: "Search", hasSearch: true) {
             VStack(){
+            }
+        }
+        .overlay{
+            VStack{
                 search
-                ForEach(0..<100) { _ in
-                    Rectangle()
-                        .frame(width: 40, height: 20)
-                }
+                    .offset(y: 25)
+                Spacer()
             }
-            .scrollTargetBehavior(.viewAligned)
-            .safeAreaInset(edge: .top) {
-                CustomHeader.header("Search")
-            }
-            .scrollTargetLayout()
-        }
-        .scrollTargetBehavior(customScrollTarget())
-        .onScrollGeometryChange(for: CGFloat.self) {
-            $0.contentOffset.y + $0.contentInsets.top
-        } action: { _, newValue in
-            withAnimation(.easeInOut(duration: 0.1)) {
-                scrollPos = newValue
-            }
-        }
-        .overlay {
-            CustomHeader.overlay("Search", scrollPos, hasSearch: true)
         }
     }
     
@@ -47,8 +30,10 @@ struct SearchView: View {
             HStack {
                 Image(systemName: "magnifyingglass")
                 
-                TextField("search", text: $searchText, onEditingChanged: { isEditing in
-                    self.showCancelButton = true
+                TextField("Artists, Songs, Lyrics and More", text: $searchText, onEditingChanged: { isEditing in
+                    withAnimation {
+                        self.showCancelButton = true
+                    }
                 }, onCommit: {
                     print("onCommit")
                 }).foregroundColor(.primary)
@@ -64,17 +49,23 @@ struct SearchView: View {
             .background(Color(.secondarySystemBackground))
             .cornerRadius(10.0)
             
-            if showCancelButton  {
+            if showCancelButton {
                 Button("Cancel") {
-                    UIApplication.shared.endEditing(true) // this must be placed before the other commands here
+                    UIApplication.shared.endEditing(true)
                     self.searchText = ""
                     self.showCancelButton = false
                 }
                 .foregroundColor(Color(.systemBlue))
+                .transition(
+                    .move(edge: .trailing)
+                    .combined(with: .opacity) // Добавляем fade-эффект
+                )
             }
         }
         .padding(.horizontal)
         .navigationBarHidden(showCancelButton)
+        .animation(.default, value: showCancelButton) // Привязка анимации к состоянию
+
     }
 }
 

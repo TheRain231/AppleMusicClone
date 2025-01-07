@@ -23,8 +23,11 @@ struct PlayerView: View {
     var namespace
     
     @State var isExpanded = false
+    @State var slidingValue: CGFloat = 0.0 // for dragging big representation down to small
     var album: Album
     var song: String
+    
+    @State private var averageColor: Color = .clear
     
     var body: some View {
         VStack{
@@ -33,9 +36,25 @@ struct PlayerView: View {
                 content
             }
             .animation(.snappy(duration: 0.45), value: isExpanded)
-                .onTapGesture {
-                    isExpanded.toggle()
+            .onTapGesture {
+                if !isExpanded{
+                    isExpanded = true
                 }
+            }
+            .gesture(
+                DragGesture()
+                    .onChanged { value in
+                        if isExpanded && value.translation.height > 0 {
+                            slidingValue = value.translation.height
+                        }
+                    }
+                    .onEnded { value in
+                        if slidingValue > UIScreen.main.bounds.height / 3 {
+                            isExpanded = false
+                        }
+                        slidingValue = 0
+                    }
+            )
         }
         
     }
@@ -47,12 +66,13 @@ extension PlayerView {
     var content: some View {
         if (isExpanded){
             big
+                .offset(y: slidingValue)
         } else {
             smol
         }
     }
     
-    var smol: some View{
+    var smol: some View {
         HStack(spacing: 20){
             Image(album.imageName)
                 .resizable()
@@ -62,37 +82,37 @@ extension PlayerView {
                 .transition(.slide)
                 .padding(.leading, 10)
                 .padding(.vertical, 10)
-            VStack{
+            VStack {
                 Text(song)
                     .lineLimit(1)
                     .offset(y:4)
-                    .matchedGeometryEffect(id: TransitionID.title, in: namespace)
+                //.matchedGeometryEffect(id: TransitionID.title, in: namespace)
                 Color.clear.frame(width: 0, height: 0)
-                    .matchedGeometryEffect(id: TransitionID.artist, in: namespace)
+                //.matchedGeometryEffect(id: TransitionID.artist, in: namespace)
             }
-
+            
             
             Spacer()
             
-            Group{
+            Group {
                 Color.clear.frame(width: 0)
-                    .matchedGeometryEffect(id: TransitionID.back, in: namespace)
+                //.matchedGeometryEffect(id: TransitionID.back, in: namespace)
                 Button{
                     
                 } label: {
                     Image(systemName: "play.fill")
                         .font(.title2)
                 }
-                .matchedGeometryEffect(id: TransitionID.play, in: namespace)
-
+                //.matchedGeometryEffect(id: TransitionID.play, in: namespace)
+                
                 Button{
                     
                 } label: {
                     Image(systemName: "forward.fill")
                         .font(.title2)
                 }
-                .matchedGeometryEffect(id: TransitionID.forward, in: namespace)
-
+                //.matchedGeometryEffect(id: TransitionID.forward, in: namespace)
+                
                 .padding(.trailing)
             }
             .foregroundStyle(.primary)
@@ -106,7 +126,6 @@ extension PlayerView {
                 .fill(.ultraThickMaterial)
                 .clipShape(.rect(cornerRadius: 15))
                 .matchedGeometryEffect(id: TransitionID.background, in: namespace)
-                
         }
         .shadow(radius: 20)
         .padding(10)
@@ -114,14 +133,14 @@ extension PlayerView {
     }
     
     var big: some View{
-        VStack{
+        VStack {
             Image(album.imageName)
-                    .resizable()
-                    .scaledToFit()
-                    .clipShape(RoundedRectangle(cornerRadius: /*@START_MENU_TOKEN@*/25.0/*@END_MENU_TOKEN@*/))
-                    .matchedGeometryEffect(id: TransitionID.cover, in: namespace)
-                    .padding()
-
+                .resizable()
+                .scaledToFit()
+                .clipShape(RoundedRectangle(cornerRadius: /*@START_MENU_TOKEN@*/25.0/*@END_MENU_TOKEN@*/))
+                .matchedGeometryEffect(id: TransitionID.cover, in: namespace)
+                .padding()
+            
             HStack{
                 VStack(alignment: .leading){
                     Text(song)
@@ -133,50 +152,64 @@ extension PlayerView {
                 Spacer()
             }
             .padding(.horizontal, 40)
-            HStack(spacing: 40){
+            
+            HStack(spacing: 70){
                 Button{
                     
                 } label: {
                     Image(systemName: "backward.fill")
                 }
-                .matchedGeometryEffect(id: TransitionID.back, in: namespace)
+                //                .matchedGeometryEffect(id: TransitionID.back, in: namespace)
+                
                 Button{
                     
                 } label: {
                     Image(systemName: "play.fill")
+                        .font(.system(size: 60))
                 }
-                .matchedGeometryEffect(id: TransitionID.play, in: namespace)
+                //                .matchedGeometryEffect(id: TransitionID.play, in: namespace)
+                
                 Button{
                     
                 } label: {
                     Image(systemName: "forward.fill")
                 }
-                .matchedGeometryEffect(id: TransitionID.forward, in: namespace)
+                //                .matchedGeometryEffect(id: TransitionID.forward, in: namespace)
             }
-            .foregroundStyle(.primary)
             .font(.largeTitle)
             .padding(20)
         }
+        .foregroundStyle(averageColor.getContrastText())
         .frame(
             maxWidth: .infinity,
             maxHeight: .infinity
         )
-        
-        .background{
-            Rectangle()
-                .fill(.thickMaterial)
-                .matchedGeometryEffect(id: TransitionID.background, in: namespace)
-                .ignoresSafeArea()
+        .background {
+            ZStack{
+                averageColor
                 
+                Image(album.imageName)
+                    .resizable()
+                    .scaledToFill()
+                    .blur(radius: 100)
+            }
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 55, style: .continuous))
+        .matchedGeometryEffect(id: TransitionID.background, in: namespace)
+        .padding(.top, -10)
+        .onAppear {
+            if let uiImage = UIImage(named: album.imageName) {
+                if let avgColor = uiImage.averageColor() {
+                    averageColor = Color(avgColor)
+                }
+            }
         }
     }
-    
 }
 
 struct MyButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            
     }
 }
 
@@ -185,7 +218,7 @@ struct MyButtonStyle: ButtonStyle {
         LinearGradient(colors: [.white, .blue, .red], startPoint: .topLeading, endPoint: .bottomTrailing)
             .ignoresSafeArea()
         
-        PlayerView(album: albums.first!, song: albums.first!.songs[2])
+        PlayerView(isExpanded: true, album: albums[4], song: albums[4].songs[4])
             .ignoresSafeArea()
     }
 }

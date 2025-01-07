@@ -11,18 +11,35 @@ struct CustomScrollView<Content: View>: View {
     let content: Content
     let title: String
     let editButton: Bool
+    let hasSearch: Bool
     @State private var scrollPos: CGFloat = 0
 
     init(title: String, @ViewBuilder content: () -> Content) {
         self.title = title
         self.content = content()
         self.editButton = false
+        self.hasSearch = false
     }
     
     init(title: String, editButton: Bool, @ViewBuilder content: () -> Content) {
         self.title = title
         self.content = content()
         self.editButton = editButton
+        self.hasSearch = false
+    }
+    
+    init(title: String, hasSearch: Bool, @ViewBuilder content: () -> Content) {
+        self.title = title
+        self.content = content()
+        self.editButton = false
+        self.hasSearch = hasSearch
+    }
+    
+    init(title: String, editButton: Bool, hasSearch: Bool, @ViewBuilder content: () -> Content) {
+        self.title = title
+        self.content = content()
+        self.editButton = editButton
+        self.hasSearch = hasSearch
     }
 
     var body: some View {
@@ -34,7 +51,14 @@ struct CustomScrollView<Content: View>: View {
             }
             .scrollTargetBehavior(.viewAligned)
             .safeAreaInset(edge: .top) {
-                CustomHeader.header(title, editButton: editButton)
+                VStack{
+                    if hasSearch{
+                        Rectangle()
+                            .foregroundStyle(.clear)
+                            .frame(height: 25)
+                    }
+                    CustomHeader.header(title, scrollPos, editButton: editButton)
+                }
             }
             .scrollTargetLayout()
         }
@@ -47,7 +71,7 @@ struct CustomScrollView<Content: View>: View {
             }
         }
         .overlay {
-            CustomHeader.overlay(title, scrollPos)
+            CustomHeader.overlay(title, scrollPos, hasSearch: hasSearch)
         }
     }
 }
