@@ -49,7 +49,7 @@ struct PlayerView: View {
                         }
                     }
                     .onEnded { value in
-                        if slidingValue > UIScreen.main.bounds.height / 3 {
+                        if slidingValue > UIScreen.main.bounds.height / 5 { // value of closing the big player
                             isExpanded = false
                         }
                         slidingValue = 0

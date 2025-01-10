@@ -62,20 +62,25 @@ struct AlbumView: View {
                 ForEach(album.songs.indices, id: \.self){ song in
                     VStack{
                         HStack(){
-                            Group{
-                                Text("\(song + 1)  ").foregroundStyle(.secondary) + Text(album.songs[song])
-                            }
-                            .padding(.horizontal, 20)
+                            Text("\(song + 1)")
+                                .foregroundStyle(.secondary)
+                                .frame(width: 30, alignment: .trailing) // Увеличьте `width`, если цифры обрезаются
+                            
+                            // Название песни вплотную к цифре
+                            Text(album.songs[song])
+                                .padding(.horizontal, 10)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            
                             Spacer()
                             Button{
                                 
-                            }label: {
+                            } label: {
                                 Image(systemName: "ellipsis")
-                                    .foregroundStyle(.gray)
                                     .padding(.horizontal, 20)
                             }
+                            .foregroundStyle(.primary)
                         }
-                        .padding(.vertical, 5)
+                        .padding(.vertical, 7)
                         Divider()
                             .padding(.horizontal, 20)
                             .padding(.leading, 20)
