@@ -29,6 +29,9 @@ struct PlayerView: View {
     
     @State private var averageColor: Color = .clear
     
+    //Starting date of drag gesture
+    @State private var startTime: Date? = nil
+    
     var body: some View {
         VStack{
             Spacer()
@@ -36,23 +39,40 @@ struct PlayerView: View {
                 content
             }
             .animation(.snappy(duration: 0.45), value: isExpanded)
+            
+            // if player not extended, it extends on tap
             .onTapGesture {
                 if !isExpanded{
                     isExpanded = true
                 }
             }
+            
+            // if player is extended, it shrinks on dragging down
             .gesture(
                 DragGesture()
                     .onChanged { value in
+                        if startTime == nil {
+                            startTime = Date()
+                        }
                         if isExpanded && value.translation.height > 0 {
                             slidingValue = value.translation.height
                         }
                     }
                     .onEnded { value in
-                        if slidingValue > UIScreen.main.bounds.height / 5 { // value of closing the big player
+                        var elapsedTime = TimeInterval()
+                        if let start = startTime {
+                            elapsedTime = Date().timeIntervalSince(start)
+                            startTime = nil // Reset the start time
+                        }
+                        
+                        if slidingValue > (elapsedTime < 0.05
+                                           ? 50 // fast dragging
+                                           : UIScreen.main.bounds.height / 2) { // value of closing the big player slower
                             isExpanded = false
                         }
-                        slidingValue = 0
+                        withAnimation(.spring(duration: 0.1)){
+                            slidingValue = 0
+                        }
                     }
             )
         }
@@ -79,31 +99,27 @@ extension PlayerView {
                 .scaledToFit()
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .matchedGeometryEffect(id: TransitionID.cover, in: namespace)
-                .transition(.slide)
                 .padding(.leading, 10)
                 .padding(.vertical, 10)
             VStack {
                 Text(song)
                     .lineLimit(1)
                     .offset(y:4)
-                //.matchedGeometryEffect(id: TransitionID.title, in: namespace)
+                
                 Color.clear.frame(width: 0, height: 0)
-                //.matchedGeometryEffect(id: TransitionID.artist, in: namespace)
+                
             }
-            
             
             Spacer()
             
             Group {
-                Color.clear.frame(width: 0)
-                //.matchedGeometryEffect(id: TransitionID.back, in: namespace)
                 Button{
                     
                 } label: {
                     Image(systemName: "play.fill")
                         .font(.title2)
                 }
-                //.matchedGeometryEffect(id: TransitionID.play, in: namespace)
+                
                 
                 Button{
                     
@@ -111,8 +127,6 @@ extension PlayerView {
                     Image(systemName: "forward.fill")
                         .font(.title2)
                 }
-                //.matchedGeometryEffect(id: TransitionID.forward, in: namespace)
-                
                 .padding(.trailing)
             }
             .foregroundStyle(.primary)
@@ -125,8 +139,8 @@ extension PlayerView {
             Rectangle()
                 .fill(.ultraThickMaterial)
                 .clipShape(.rect(cornerRadius: 15))
-                .matchedGeometryEffect(id: TransitionID.background, in: namespace)
         }
+        .matchedGeometryEffect(id: TransitionID.background, in: namespace)
         .shadow(radius: 20)
         .padding(10)
         .offset(y: -80)
@@ -134,32 +148,49 @@ extension PlayerView {
     
     var big: some View{
         VStack {
+            Image(systemName: "minus")
+                .font(.largeTitle)
+                .foregroundStyle(.secondary)
             Image(album.imageName)
                 .resizable()
                 .scaledToFit()
                 .clipShape(RoundedRectangle(cornerRadius: /*@START_MENU_TOKEN@*/25.0/*@END_MENU_TOKEN@*/))
                 .matchedGeometryEffect(id: TransitionID.cover, in: namespace)
-                .padding()
+                .padding(25)
             
             HStack{
                 VStack(alignment: .leading){
                     Text(song)
                         .bold()
-                        .matchedGeometryEffect(id: TransitionID.title, in: namespace)
                     Text(album.artist)
-                        .matchedGeometryEffect(id: TransitionID.artist, in: namespace)
                 }
                 Spacer()
+                Button{
+                    
+                } label: {
+                    Image(systemName: "ellipsis.circle.fill")
+                        .symbolRenderingMode(.hierarchical)
+                        .font(.title2)
+                }
             }
             .padding(.horizontal, 40)
             
-            HStack(spacing: 70){
+            // song timeline
+            RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.gray.opacity(0.5))
+                            .frame(height: 5) // line height
+                            .padding(.horizontal, 40)
+                            .padding(.top, 20)
+                            .padding(.bottom, 30)
+            
+            HStack(spacing: 0){
                 Button{
                     
                 } label: {
                     Image(systemName: "backward.fill")
                 }
-                //                .matchedGeometryEffect(id: TransitionID.back, in: namespace)
+                
+                Spacer()
                 
                 Button{
                     
@@ -167,17 +198,17 @@ extension PlayerView {
                     Image(systemName: "play.fill")
                         .font(.system(size: 60))
                 }
-                //                .matchedGeometryEffect(id: TransitionID.play, in: namespace)
+                
+                Spacer()
                 
                 Button{
                     
                 } label: {
                     Image(systemName: "forward.fill")
                 }
-                //                .matchedGeometryEffect(id: TransitionID.forward, in: namespace)
             }
             .font(.largeTitle)
-            .padding(20)
+            .padding(45)
         }
         .foregroundStyle(averageColor.getContrastText())
         .frame(
@@ -195,8 +226,8 @@ extension PlayerView {
             }
         }
         .clipShape(RoundedRectangle(cornerRadius: 55, style: .continuous))
-        .matchedGeometryEffect(id: TransitionID.background, in: namespace)
         .padding(.top, -10)
+        .matchedGeometryEffect(id: TransitionID.background, in: namespace)
         .onAppear {
             if let uiImage = UIImage(named: album.imageName) {
                 if let avgColor = uiImage.averageColor() {
